@@ -57,6 +57,7 @@ button:active{
     background-color: gray;
     padding-right: 10px;
     text-align: right;
+    font-size: 40px;
 }
 
 .lowerPortion{
