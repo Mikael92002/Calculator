@@ -3,10 +3,10 @@ let screenArray = [];
 
 createButtons();
 
-function createButtons(){
+function createButtons() {
     const numbersEnclosure = document.querySelector(".numbers");
 
-    for(let i = 1;i<=9;i++){
+    for (let i = 1; i <= 9; i++) {
         const numberDivs = document.createElement("button");
         numberDivs.textContent = `${i}`;
         numberDivs.style.backgroundColor = "yellow";
@@ -19,22 +19,27 @@ function createButtons(){
         numberDivs.style.fontSize = "40px";
         numberDivs.style.fontWeight = "900";
         numbersArray[i] = numberDivs;
-        numberDivs.addEventListener("click", () =>{
-            screenArray.push(numberDivs);
+        numberDivs.addEventListener("click", () => {
+            if (typeof (screenArray[screenArray.length-1]) === "number") {
+                screenArray[screenArray.length - 1] = +(screenArray[screenArray.length - 1] + numberDivs.textContent);
+                console.log("it's happening");
+            }
+            else { screenArray.push(+numberDivs.textContent); }
+            console.log(screenArray);
         })
     }
 
     let numbersArrayIndexIterator = 1;
 
-    for(let i = 0;i<3;i++){
+    for (let i = 0; i < 3; i++) {
         const numberDivsRow = document.createElement("div");
         numberDivsRow.style.display = "flex";
         numberDivsRow.style.justifyContent = "space-between";
         numberDivsRow.style.minHeight = "25%";
-        for(let j = numbersArrayIndexIterator;j<numbersArrayIndexIterator+3;j++){
+        for (let j = numbersArrayIndexIterator; j < numbersArrayIndexIterator + 3; j++) {
             numberDivsRow.appendChild(numbersArray[j]);
         }
-        numbersArrayIndexIterator+=3;
+        numbersArrayIndexIterator += 3;
         numbersEnclosure.appendChild(numberDivsRow);
     }
 
@@ -54,9 +59,10 @@ function createButtons(){
     zeroDiv.style.fontSize = "40px";
     zeroDiv.style.fontWeight = "900";
 
+    zeroDiv.addEventListener("click", () => {
+        screenArray.push(+zeroDiv.textContent);
+    })
+
 
     numbersEnclosure.appendChild(zeroDiv);
-
-    
-
 }
