@@ -60,7 +60,11 @@ function createButtons() {
     zeroDiv.style.fontWeight = "900";
 
     zeroDiv.addEventListener("click", () => {
-        screenArray.push(+zeroDiv.textContent);
+        if (typeof (screenArray[screenArray.length-1]) === "number") {
+            screenArray[screenArray.length - 1] = +(screenArray[screenArray.length - 1] + zeroDiv.textContent);
+            console.log("it's happening");
+        }
+        else {screenArray.push(+zeroDiv.textContent);}
     })
 
 
