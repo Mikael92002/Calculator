@@ -38,6 +38,11 @@ html{
     font-size: 50px;
 }
 
+.function.decimal{
+    margin: 0;
+    border-radius: 0px;
+}
+
 .function.equals{
     background-color: orange;
 }

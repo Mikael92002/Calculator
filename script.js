@@ -1,6 +1,7 @@
 let numbersArray = [];
 let screenArray = [];
 let operatorArray = [];
+let calculated = false;
 
 createButtons();
 
@@ -20,13 +21,16 @@ function createButtons() {
         numberDivs.style.fontSize = "40px";
         numberDivs.style.fontWeight = "900";
         numbersArray[i] = numberDivs;
+
         numberDivs.addEventListener("click", () => {
             if (operatorArray.length > 0) {
                 if (typeof (screenArray[1]) === "undefined") {
                     screenArray[1] = +(numberDivs.textContent);
+                    screen.textContent = screenArray[0] + " " + operatorArray[0] + " " + screenArray[1];
                 }
                 else {
                     screenArray[1] = +(screenArray[1] + numberDivs.textContent);
+                    screen.textContent = screenArray[0] + " " + operatorArray[0] + " " + screenArray[1];
                 }
                 console.log("adding to position 1: " + screenArray);
             }
@@ -59,19 +63,22 @@ function createButtons() {
     }
 
     const bottomEnclosure = document.createElement("div");
+    bottomEnclosure.style.display = "flex";
+    bottomEnclosure.style.minHeight = "25%";
+    bottomEnclosure.style.justifyContent = "space-between";
 
 
     const zeroDiv = document.createElement("button");
     zeroDiv.textContent = "0";
     zeroDiv.style.display = "flex";
-    zeroDiv.style.flex = "1 1 auto";
+    zeroDiv.style.flex = "1 1 0";
     zeroDiv.style.border = "2px solid black";
     zeroDiv.style.alignItems = "center";
     zeroDiv.style.justifyContent = "center";
-    zeroDiv.style.marginLeft = "auto";
-    zeroDiv.style.marginRight = "auto";
-    zeroDiv.style.minWidth = "33.333333333%";
-    zeroDiv.style.minHeight = "25%";
+    // zeroDiv.style.marginLeft = "auto";
+    // zeroDiv.style.marginRight = "auto";
+    // zeroDiv.style.minWidth = "33.333333333%";
+    // zeroDiv.style.minHeight = "25%";
     zeroDiv.style.backgroundColor = "yellow";
     zeroDiv.style.color = "black";
     zeroDiv.style.fontSize = "40px";
@@ -96,13 +103,34 @@ function createButtons() {
         }
     });
 
-    const clearButton = document.createElement("div");
+    const clearButton = document.createElement("button");
     clearButton.textContent = 'CLEAR';
     clearButton.style.display = 'flex';
+    clearButton.style.flex = "1 0 0";
+    clearButton.style.justifyContent = "center";
+    clearButton.style.alignItems = "center";
+    clearButton.style.border = "2px solid black";
+    clearButton.style.backgroundColor = "yellow";
+    clearButton.fontSize = "40px";
+
+    clearButton.addEventListener("click", () => {
+        screenArray = [];
+        operatorArray = [];
+        screen.textContent = "";
+    })
+
+
+    const decimal = document.querySelector(".decimal");
+
+
+    bottomEnclosure.appendChild(decimal);
+    bottomEnclosure.appendChild(zeroDiv);
+    bottomEnclosure.appendChild(clearButton);
+    
 
 
 
-    numbersEnclosure.appendChild(zeroDiv);
+    numbersEnclosure.appendChild(bottomEnclosure);
 }
 
 
@@ -110,7 +138,7 @@ const multiply = document.querySelector(".multiply");
 const divide = document.querySelector(".divide");
 const add = document.querySelector(".add");
 const subtract = document.querySelector(".subtract");
-const decimal = document.querySelector(".decimal");
+
 const equals = document.querySelector(".equals");
 
 const screen = document.querySelector(".screen");
@@ -154,6 +182,8 @@ subtract.addEventListener("click", () => {
         operatorArray[0] = "-";
     }
 });
+
+
 
 
 function operate(num1, num2, operator) {
