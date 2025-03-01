@@ -2,6 +2,7 @@ let numbersArray = [];
 let screenArray = [];
 let operatorArray = [];
 let calculated = false;
+let operaterInserted = false;
 
 createButtons();
 
@@ -38,9 +39,11 @@ function createButtons() {
             else {
                 if (typeof (screenArray[0]) === "undefined") {
                     screenArray[0] = +(numberDivs.textContent);
+                    screen.textContent = screenArray[0];
                 }
                 else {
                     screenArray[0] = (screenArray[0] + numberDivs.textContent);
+                    screen.textContent = screenArray[0];
                 }
                 console.log("adding to position 0: " + screenArray);
             }
@@ -91,6 +94,7 @@ function createButtons() {
             }
             else {
                 screenArray[1] = +(screenArray[1] + zeroDiv.textContent);
+                screen.textContent = screenArray[0] + " " + operatorArray + " " + screenArray[1];
             }
         }
         else {
@@ -99,6 +103,7 @@ function createButtons() {
             }
             else {
                 screenArray[0] = +(screenArray[0] + zeroDiv.textContent);
+                screen.textContent = screenArray[0];
             }
         }
     });
@@ -121,6 +126,14 @@ function createButtons() {
 
 
     const decimal = document.querySelector(".decimal");
+    decimal.addEventListener("click", () =>{
+        if(typeof(screenArray[1])==="number"){
+            screenArray[1] = screenArray[1] + ".";
+        }
+        else if(typeof(screenArray[0]) === "number"){
+            screenArray[0] = screenArray[0] + ".";
+        }
+    })
 
 
     bottomEnclosure.appendChild(decimal);
@@ -156,30 +169,39 @@ equals.addEventListener("click", () => {
         screen.textContent = `${result}`;
         screenArray = [result];
         operatorArray = [];
+        operaterInserted = false;
     }
 });
 
 multiply.addEventListener("click", () => {
-    if (numbersArray.length > 0) {
+    if (screenArray.length > 0 && operaterInserted === false) {
         operatorArray[0] = "x";
+        screen.textContent = screenArray[0] + " x ";
+        operaterInserted = true;
     }
 });
 
 divide.addEventListener("click", () => {
-    if (numbersArray.length > 0) {
+    if (screenArray.length > 0 && operaterInserted === false) {
         operatorArray[0] = "/";
+        screen.textContent = screenArray[0] + " / "
+        operaterInserted = true;
     }
 });
 
 add.addEventListener("click", () => {
-    if (numbersArray.length > 0) {
+    if (screenArray.length > 0 && operaterInserted === false) {
         operatorArray[0] = "+";
+        screen.textContent = screenArray[0] + " + ";
+        operaterInserted = true;
     }
 });
 
 subtract.addEventListener("click", () => {
-    if (numbersArray.length > 0) {
+    if (screenArray.length > 0 && operaterInserted === false) {
         operatorArray[0] = "-";
+        screen.textContent = screenArray[0] + " - "
+        operaterInserted = true;
     }
 });
 
@@ -200,6 +222,7 @@ function operate(num1, num2, operator) {
         if (num2 === 0) {
             return "can't do that cuh";
         }
-        return +num1 / +num2;
+        const result = +num1/+num2;
+        return result.toFixed(5);
     }
 };
