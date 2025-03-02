@@ -1,6 +1,8 @@
 const screen = document.querySelector(".screen");
-let operaterInserted = true;
+let operatorInserted = false;
+let invalidZeroIndex = true;
 let numbersArray = [];
+let operator = "";
 
 createButtons();
 
@@ -23,7 +25,7 @@ function createButtons() {
 
         numberDivs.addEventListener("click", () => {
             screen.textContent = screen.textContent + numberDivs.textContent;
-            operaterInserted = false;
+            invalidZeroIndex = false;
         });
     }
 
@@ -61,7 +63,7 @@ function createButtons() {
     zeroDiv.style.fontWeight = "900";
 
     zeroDiv.addEventListener("click", () => {
-        if(operaterInserted){
+        if(invalidZeroIndex){
             return;
         }
         else{
@@ -82,7 +84,9 @@ function createButtons() {
 
     clearButton.addEventListener("click", () => {
         screen.textContent = "";
-        operaterInserted = true;
+        operatorInserted = false;
+        invalidZeroIndex = true;
+        operator = "";
     })
 
 
@@ -107,29 +111,53 @@ const multiply = document.querySelector(".multiply");
 const divide = document.querySelector(".divide");
 const add = document.querySelector(".add");
 const subtract = document.querySelector(".subtract");
-
 const equals = document.querySelector(".equals");
 
 
 
 equals.addEventListener("click", () => {
-    
+    if(operatorInserted){
+    let screenArray = screen.textContent.split(operator);
+    let num1 = screenArray[0];
+    let num2 = screenArray[1];
+    screen.textContent = operate(num1,num2, operator);
+}
 });
 
 multiply.addEventListener("click", () => {
-   
+   if(operatorInserted===false && screen.textContent !== ""){
+    screen.textContent = screen.textContent + "x";
+    operatorInserted = true;
+    invalidZeroIndex = true;
+    operator = "x";
+   }
 });
 
 divide.addEventListener("click", () => {
-    
+    if(operatorInserted===false && screen.textContent !== ""){
+        screen.textContent = screen.textContent + "/";
+        operatorInserted = true;
+        invalidZeroIndex = true;
+        operator = "/";
+       }
 });
 
 add.addEventListener("click", () => {
-    
+    if(operatorInserted===false && screen.textContent !== ""){
+        screen.textContent = screen.textContent + "+";
+        operatorInserted = true;
+        invalidZeroIndex = true;
+        operator = "+";
+       }
 });
 
 subtract.addEventListener("click", () => {
-    
+    if(operatorInserted===false && screen.textContent !== ""){
+        screen.textContent = screen.textContent + "-";
+        operatorInserted = true;
+        invalidZeroIndex = true;
+        operator = "-";
+       }
 });
 
 
