@@ -3,6 +3,7 @@ let operatorInserted = false;
 let invalidZeroIndex = true;
 let numbersArray = [];
 let operator = "";
+let decimalInserted = false;
 
 createButtons();
 
@@ -56,17 +57,17 @@ function createButtons() {
     zeroDiv.style.border = "2px solid black";
     zeroDiv.style.alignItems = "center";
     zeroDiv.style.justifyContent = "center";
-    
+
     zeroDiv.style.backgroundColor = "yellow";
     zeroDiv.style.color = "black";
     zeroDiv.style.fontSize = "40px";
     zeroDiv.style.fontWeight = "900";
 
     zeroDiv.addEventListener("click", () => {
-        if(invalidZeroIndex){
+        if (invalidZeroIndex) {
             return;
         }
-        else{
+        else {
             screen.textContent = screen.textContent + zeroDiv.textContent;
         }
 
@@ -87,21 +88,23 @@ function createButtons() {
         operatorInserted = false;
         invalidZeroIndex = true;
         operator = "";
+        decimalInserted = false;
     })
 
 
     const decimal = document.querySelector(".decimal");
-    decimal.addEventListener("click", () =>{
-        
+    decimal.addEventListener("click", () => {
+        if(!decimalInserted){
+        screen.textContent = screen.textContent + ".";
+        decimalInserted = true;
+        invalidZeroIndex = false;
+    }
     })
 
 
     bottomEnclosure.appendChild(decimal);
     bottomEnclosure.appendChild(zeroDiv);
     bottomEnclosure.appendChild(clearButton);
-    
-
-
 
     numbersEnclosure.appendChild(bottomEnclosure);
 }
@@ -116,48 +119,53 @@ const equals = document.querySelector(".equals");
 
 
 equals.addEventListener("click", () => {
-    if(operatorInserted){
-    let screenArray = screen.textContent.split(operator);
-    let num1 = screenArray[0];
-    let num2 = screenArray[1];
-    screen.textContent = operate(num1,num2, operator);
-}
+    if (operatorInserted) {
+        let screenArray = screen.textContent.split(operator);
+        let num1 = screenArray[0];
+        let num2 = screenArray[1];
+        screen.textContent = operate(num1, num2, operator);
+        operatorInserted = false;
+    }
 });
 
 multiply.addEventListener("click", () => {
-   if(operatorInserted===false && screen.textContent !== ""){
-    screen.textContent = screen.textContent + "x";
-    operatorInserted = true;
-    invalidZeroIndex = true;
-    operator = "x";
-   }
+    if (operatorInserted === false && screen.textContent !== "") {
+        screen.textContent = screen.textContent + "x";
+        operatorInserted = true;
+        invalidZeroIndex = true;
+        decimalInserted = false;
+        operator = "x";
+    }
 });
 
 divide.addEventListener("click", () => {
-    if(operatorInserted===false && screen.textContent !== ""){
+    if (operatorInserted === false && screen.textContent !== "") {
         screen.textContent = screen.textContent + "/";
         operatorInserted = true;
         invalidZeroIndex = true;
+        decimalInserted = false;
         operator = "/";
-       }
+    }
 });
 
 add.addEventListener("click", () => {
-    if(operatorInserted===false && screen.textContent !== ""){
+    if (operatorInserted === false && screen.textContent !== "") {
         screen.textContent = screen.textContent + "+";
         operatorInserted = true;
         invalidZeroIndex = true;
+        decimalInserted = false;
         operator = "+";
-       }
+    }
 });
 
 subtract.addEventListener("click", () => {
-    if(operatorInserted===false && screen.textContent !== ""){
+    if (operatorInserted === false && screen.textContent !== "") {
         screen.textContent = screen.textContent + "-";
         operatorInserted = true;
         invalidZeroIndex = true;
+        decimalInserted = false;
         operator = "-";
-       }
+    }
 });
 
 
@@ -165,19 +173,31 @@ subtract.addEventListener("click", () => {
 
 function operate(num1, num2, operator) {
     if (operator === "+") {
-        return +num1 + +num2;
+        const result = +num1 + +num2;
+        if(Number.isInteger(result)){
+        return result;}
+        else return result.toFixed(5);
     }
     if (operator === "-") {
-        return +num1 - +num2;
+        const result = +num1 - +num2;
+        if(Number.isInteger(result)){
+            return result;}
+            else return result.toFixed(5);
     }
     if (operator === "x") {
-        return +num1 * +num2;
+        const result = +num1 * +num2;
+        if(Number.isInteger(result)){
+            return result;}
+            else return result.toFixed(5);
     }
     if (operator === "/") {
         if (+num2 === 0) {
             return "can't do that cuh";
         }
-        const result = +num1/+num2;
-        return result.toFixed(5);
+        const result = +num1 / +num2;
+        if (Number.isInteger(result)) {
+            return result;
+        }
+        else return result.toFixed(5);
     }
 };
