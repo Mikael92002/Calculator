@@ -1,8 +1,6 @@
+const screen = document.querySelector(".screen");
+let operaterInserted = true;
 let numbersArray = [];
-let screenArray = [];
-let operatorArray = [];
-let calculated = false;
-let operaterInserted = false;
 
 createButtons();
 
@@ -24,30 +22,8 @@ function createButtons() {
         numbersArray[i] = numberDivs;
 
         numberDivs.addEventListener("click", () => {
-            if (operatorArray.length > 0) {
-                if (typeof (screenArray[1]) === "undefined") {
-                    screenArray[1] = +(numberDivs.textContent);
-                    screen.textContent = screenArray[0] + " " + operatorArray[0] + " " + screenArray[1];
-                }
-                else {
-                    screenArray[1] = +(screenArray[1] + numberDivs.textContent);
-                    screen.textContent = screenArray[0] + " " + operatorArray[0] + " " + screenArray[1];
-                }
-                console.log("adding to position 1: " + screenArray);
-            }
-
-            else {
-                if (typeof (screenArray[0]) === "undefined") {
-                    screenArray[0] = +(numberDivs.textContent);
-                    screen.textContent = screenArray[0];
-                }
-                else {
-                    screenArray[0] = (screenArray[0] + numberDivs.textContent);
-                    screen.textContent = screenArray[0];
-                }
-                console.log("adding to position 0: " + screenArray);
-            }
-            console.log("type is: " + typeof(screenArray[0]) + "type is: " + typeof(screenArray[1]));
+            screen.textContent = screen.textContent + numberDivs.textContent;
+            operaterInserted = false;
         });
     }
 
@@ -78,34 +54,20 @@ function createButtons() {
     zeroDiv.style.border = "2px solid black";
     zeroDiv.style.alignItems = "center";
     zeroDiv.style.justifyContent = "center";
-    // zeroDiv.style.marginLeft = "auto";
-    // zeroDiv.style.marginRight = "auto";
-    // zeroDiv.style.minWidth = "33.333333333%";
-    // zeroDiv.style.minHeight = "25%";
+    
     zeroDiv.style.backgroundColor = "yellow";
     zeroDiv.style.color = "black";
     zeroDiv.style.fontSize = "40px";
     zeroDiv.style.fontWeight = "900";
 
     zeroDiv.addEventListener("click", () => {
-        if (operatorArray.length > 0) {
-            if (typeof (screenArray[1]) === "undefined") {
-                return;
-            }
-            else {
-                screenArray[1] = +(screenArray[1] + zeroDiv.textContent);
-                screen.textContent = screenArray[0] + " " + operatorArray + " " + screenArray[1];
-            }
+        if(operaterInserted){
+            return;
         }
-        else {
-            if (typeof (screenArray[0]) === "undefined") {
-                return;
-            }
-            else {
-                screenArray[0] = +(screenArray[0] + zeroDiv.textContent);
-                screen.textContent = screenArray[0];
-            }
+        else{
+            screen.textContent = screen.textContent + zeroDiv.textContent;
         }
+
     });
 
     const clearButton = document.createElement("button");
@@ -119,20 +81,14 @@ function createButtons() {
     clearButton.fontSize = "40px";
 
     clearButton.addEventListener("click", () => {
-        screenArray = [];
-        operatorArray = [];
         screen.textContent = "";
+        operaterInserted = true;
     })
 
 
     const decimal = document.querySelector(".decimal");
     decimal.addEventListener("click", () =>{
-        if(typeof(screenArray[1])==="number"){
-            screenArray[1] = screenArray[1] + ".";
-        }
-        else if(typeof(screenArray[0]) === "number"){
-            screenArray[0] = screenArray[0] + ".";
-        }
+        
     })
 
 
@@ -154,55 +110,26 @@ const subtract = document.querySelector(".subtract");
 
 const equals = document.querySelector(".equals");
 
-const screen = document.querySelector(".screen");
+
 
 equals.addEventListener("click", () => {
-    if (screenArray.length > 0) {
-        const num1 = +screenArray[0];
-        const num2 = +screenArray[1];
-        const operator = operatorArray[0];
-        console.log(typeof(num1));
-        console.log(typeof(num2));
-        console.log(typeof(operator));
-        console.log(operator);
-        const result = operate(num1, num2, operator);
-        screen.textContent = `${result}`;
-        screenArray = [result];
-        operatorArray = [];
-        operaterInserted = false;
-    }
+    
 });
 
 multiply.addEventListener("click", () => {
-    if (screenArray.length > 0 && operaterInserted === false) {
-        operatorArray[0] = "x";
-        screen.textContent = screenArray[0] + " x ";
-        operaterInserted = true;
-    }
+   
 });
 
 divide.addEventListener("click", () => {
-    if (screenArray.length > 0 && operaterInserted === false) {
-        operatorArray[0] = "/";
-        screen.textContent = screenArray[0] + " / "
-        operaterInserted = true;
-    }
+    
 });
 
 add.addEventListener("click", () => {
-    if (screenArray.length > 0 && operaterInserted === false) {
-        operatorArray[0] = "+";
-        screen.textContent = screenArray[0] + " + ";
-        operaterInserted = true;
-    }
+    
 });
 
 subtract.addEventListener("click", () => {
-    if (screenArray.length > 0 && operaterInserted === false) {
-        operatorArray[0] = "-";
-        screen.textContent = screenArray[0] + " - "
-        operaterInserted = true;
-    }
+    
 });
 
 
@@ -219,7 +146,7 @@ function operate(num1, num2, operator) {
         return +num1 * +num2;
     }
     if (operator === "/") {
-        if (num2 === 0) {
+        if (+num2 === 0) {
             return "can't do that cuh";
         }
         const result = +num1/+num2;
